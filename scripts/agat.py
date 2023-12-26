@@ -7,7 +7,8 @@ from collections import OrderedDict
 from typing import Union
 import agentsd
 
-from modules import script_callbacks, rng, shared
+from modules import script_callbacks, shared
+from ..agent import rng
 from modules.script_callbacks import CFGDenoiserParams
 
 import torch
