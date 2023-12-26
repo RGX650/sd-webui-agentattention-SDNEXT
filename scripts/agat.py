@@ -8,7 +8,7 @@ from typing import Union
 import agentsd
 
 from modules import script_callbacks, shared
-from ..agent import rng
+from ..rng import rng
 from modules.script_callbacks import CFGDenoiserParams
 
 import torch
