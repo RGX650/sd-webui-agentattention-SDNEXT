@@ -252,8 +252,10 @@ def aa_apply_field(field):
 def make_axis_options():
         xyz_grid = [x for x in scripts.scripts_data if x.script_class.__module__ == "xyz_grid.py"][0].module
         extra_axis_options = {
-                xyz_grid.AxisOption("[AgentAttention] Active", str, aa_apply_override('aa_active', boolean=True), choices=xyz_grid.boolean_choice(reverse=True)),
-                xyz_grid.AxisOption("[AgentAttention] Use Second Pass", str, aa_apply_override('aa_use_sp', boolean=True), choices=xyz_grid.boolean_choice(reverse=True)),
+                #xyz_grid.AxisOption("[AgentAttention] Active", str, aa_apply_override('aa_active', boolean=True), choices=xyz_grid.boolean_choice(reverse=True)),
+                #xyz_grid.AxisOption("[AgentAttention] Use Second Pass", str, aa_apply_override('aa_use_sp', boolean=True), choices=xyz_grid.boolean_choice(reverse=True)),
+                xyz_grid.AxisOption("[AgentAttention] Active", str, aa_apply_field("aa_active")),
+                xyz_grid.AxisOption("[AgentAttention] Use Second Pass", str, aa_apply_field("aa_use_sp")),
                 xyz_grid.AxisOption("[AgentAttention] Second Pass Step", int, aa_apply_field("aa_sp_step")),
                 xyz_grid.AxisOption("[AgentAttention] First Pass sx", int, aa_apply_field("aa_sx")),
                 xyz_grid.AxisOption("[AgentAttention] First Pass sy", int, aa_apply_field("aa_sy")),
@@ -263,11 +265,18 @@ def make_axis_options():
                 xyz_grid.AxisOption("[AgentAttention] Second Pass sy", int, aa_apply_field("aa_sp_sy")),
                 xyz_grid.AxisOption("[AgentAttention] Second Pass Ratio", float, aa_apply_field("aa_sp_ratio")),
                 xyz_grid.AxisOption("[AgentAttention] Second Pass Agent Ratio", float, aa_apply_field("aa_sp_agent_ratio")),
-                xyz_grid.AxisOption("[AgentAttention] Use FP32", str, aa_apply_override('aa_use_fp32', boolean=True), choices=xyz_grid.boolean_choice(reverse=True)),
+                #xyz_grid.AxisOption("[AgentAttention] Use FP32", str, aa_apply_override('aa_use_fp32', boolean=True), choices=xyz_grid.boolean_choice(reverse=True)),
+                xyz_grid.AxisOption("[AgentAttention] Use FP32", str, aa_apply_field("aa_use_fp32")),
                 xyz_grid.AxisOption("[AgentAttention] Max Downsample", int, aa_apply_field('aa_max_downsample')),
         }
-        if not any("[AgentAttention]" in x.label for x in xyz_grid.axis_options):
-                xyz_grid.axis_options.extend(extra_axis_options)
+        #if not any("[AgentAttention]" in x.label for x in xyz_grid.axis_options):
+                #xyz_grid.axis_options.extend(extra_axis_options)
+
+        existing_labels = [option.label for option in xyz_grid.axis_options]
+        for option in extra_axis_options:
+                if f"[AgentAttention] {option.label.split('] ')[1]}" not in existing_labels:
+                        xyz_grid.axis_options.append(option)
+
 
 def callback_before_ui():
         try:
